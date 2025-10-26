@@ -1,0 +1,10 @@
+0:brush
+1:pen
+2:perfume
+3:smartwatch
+4:sunglasses
+5:cell phone
+6:bottle
+7:book
+8:laptop
+9:cup

@@ -1,0 +1,10 @@
+brush
+pen
+perfume
+smartwatch
+sunglasses
+cell phone
+bottle
+book
+laptop
+cup

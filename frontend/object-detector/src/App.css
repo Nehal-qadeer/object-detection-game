@@ -1,0 +1,182 @@
+/* ========= Kid-friendly background + UI base (no external assets) ========= */
+
+:root {
+  --fg: #eef2f7;
+  --card-bg: rgba(17, 24, 39, 0.65);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 20px 60px rgba(0,0,0,0.35);
+
+  /* lively but calm palette */
+  --accent-1: #22c55e;  /* green */
+  --accent-2: #0ea5e9;  /* sky */
+  --accent-3: #a78bfa;  /* violet */
+  --accent-4: #f59e0b;  /* amber */
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--fg);
+  background: #0b0f13; /* fallback if animations disabled */
+}
+
+/* Main wrapper used by App.js */
+.app-wrap {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  color: var(--fg);
+}
+
+/* ---------- Animated background layer ---------- */
+.bg-anim {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  /* base gradient canvas */
+  background:
+    radial-gradient(1000px 600px at 12% 8%, rgba(20, 33, 61, 0.9) 0%, transparent 60%),
+    radial-gradient(900px 500px at 88% 18%, rgba(14, 165, 233, 0.9) 0%, transparent 60%),
+    radial-gradient(900px 900px at 30% 92%, rgba(34, 197, 94, 0.9) 0%, transparent 60%),
+    linear-gradient(135deg, #0b1020 0%, #0b0f13 100%);
+  filter: saturate(1.1);
+}
+
+/* Floating bubble/confetti layers with URL-encoded inline SVG */
+.bg-anim::before,
+.bg-anim::after {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background-repeat: no-repeat;
+  animation: drift 28s ease-in-out infinite alternate;
+}
+
+/* Big soft bubbles (radial gradients) */
+.bg-anim::before {
+  opacity: 0.22;
+  background-image:
+    radial-gradient(120px 120px at 10% 20%, var(--accent-2), transparent 60%),
+    radial-gradient(180px 180px at 75% 12%, var(--accent-3), transparent 60%),
+    radial-gradient(140px 140px at 85% 70%, var(--accent-1), transparent 60%),
+    radial-gradient(120px 120px at 25% 85%, var(--accent-4), transparent 60%);
+  background-size: 45% 45%, 35% 35%, 40% 40%, 30% 30%;
+  background-position: 5% 10%, 80% 8%, 86% 72%, 20% 88%;
+}
+
+/* Tiny confetti dots (SVG is percent-encoded so parsers don't complain) */
+.bg-anim::after {
+  opacity: 0.18;
+  background-repeat: repeat;
+  background-size: 240px 240px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27240%27 height=%27240%27 viewBox=%270%200%20240%20240%27%3E%3Cg fill=%27none%27 stroke=%27white%27 stroke-opacity=%270.35%27 stroke-width=%273%27%3E%3Ccircle cx=%2730%27 cy=%2730%27 r=%274%27/%3E%3Ccircle cx=%27120%27 cy=%2760%27 r=%273%27/%3E%3Ccircle cx=%27210%27 cy=%2730%27 r=%274%27/%3E%3Ccircle cx=%2760%27 cy=%27120%27 r=%273%27/%3E%3Ccircle cx=%27180%27 cy=%27120%27 r=%273%27/%3E%3Ccircle cx=%2730%27 cy=%27210%27 r=%274%27/%3E%3Ccircle cx=%27120%27 cy=%27180%27 r=%273%27/%3E%3Ccircle cx=%27210%27 cy=%27210%27 r=%274%27/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Gentle motion; honors reduced motion */
+@keyframes drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(0, -16px, 0) scale(1.02); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-anim::before,
+  .bg-anim::after { animation: none; }
+}
+
+/* ---------- Layout & cards ---------- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Buttons: larger targets, high contrast ---------- */
+.btn {
+  padding: 12px 18px;             /* bigger tap target for kids */
+  border-radius: 12px;
+  border: none;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: transform 60ms ease, filter 160ms ease;
+}
+.btn:active { transform: translateY(1px) scale(0.995); }
+.btn:hover  { filter: brightness(1.06); }
+
+/* Color helpers (optional) */
+.btn-green { background: #10b981; color: #08110a; }
+.btn-amber { background: #f59e0b; color: #1a1200; }
+.btn-violet{ background: #a78bfa; color: #0b0820; }
+.btn-grey  { background: #6b7280; color: #0e0e0e; }
+
+/* ---------- Media (video/canvas) ---------- */
+.media {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  background: #000;
+}
+
+/* ---------- Subtitle banner (captions) ---------- */
+.sub-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 14px 18px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  color: #fff;
+  font-size: 19px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  z-index: 50;
+}
+
+/* Optional halo when speaking (add/remove `speaking` on <body>) */
+body.speaking .sub-banner {
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.55);
+  animation: halo 1.2s ease-out infinite;
+}
+@keyframes halo {
+  0%   { box-shadow: 0 0 0 0 rgba(255,255,255,0.45); }
+  100% { box-shadow: 0 0 0 18px rgba(255,255,255,0); }
+}
+
+/* ---------- Header styles (your requested title) ---------- */
+.page-header { margin-bottom: 12px; }
+.page-title {
+  font-size: clamp(22px, 2.2vw + 14px, 34px);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  margin: 0;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #22c55e, #0ea5e9, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+}
+
+/* ---------- Headings & small helpers ---------- */
+h1, h2, h3 { margin: 0 0 8px; }
+small, .hint { opacity: 0.85; }
+
+/* ========= Keep CRA demo selectors if anything still references them ========= */
+.App { text-align: center; }
+.App-logo { height: 40vmin; pointer-events: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo { animation: App-logo-spin infinite 20s linear; }
+}
+@keyframes App-logo-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
